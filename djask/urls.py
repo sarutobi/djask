@@ -18,7 +18,7 @@ urlpatterns = patterns('',
 
 urlpatterns += patterns('',
     (r'^$', 'crowdtask.views.apps_list'),
-    (r'^account/login$', 'crowdtask.views.login'),
+    (r'^account/login$', 'django.contrib.auth.views.login', {'template_name': 'login_form.html'}),
     (r'^account/create$', 'crowdtask.views.create_user'),
     (r'^app/', include('crowdtask.urls'))
 )

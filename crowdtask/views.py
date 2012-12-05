@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 import logging
-from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.template.response import TemplateResponse
 from django.http import HttpResponseRedirect
 
@@ -16,10 +16,6 @@ def apps_list(request):
         { 'apps': Application.objects.all(),
         }
     )
-
-def login(request):
-    ''' Login form '''
-    pass
 
 def create_user(request):
     ''' register form'''
