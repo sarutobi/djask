@@ -17,5 +17,6 @@ urlpatterns = patterns('',
 )
 
 urlpatterns += patterns('',
-    ('^app/', include('crowdtask.urls'))
+    (r'^$', 'crowdtask.views.apps_list'),
+    (r'^app/', include('crowdtask.urls'))
 )
