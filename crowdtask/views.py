@@ -7,7 +7,7 @@ from django.http import HttpResponseRedirect
 from django.contrib.auth.models import User
 
 from crowdtask.models import Application
-from crowdtask.forms import ApplicationForm
+from crowdtask.forms import ApplicationForm, TaskForm
 
 logger = logging.getLogger(__name__)
 
@@ -47,3 +47,9 @@ def create_app(request):
             return HttpResponseRedirect('/')
         return TemplateResponse(request, 'application_form.html',
             {'form': form,})
+
+def create_task(request):
+    ''' create task form'''
+    if request.method == 'GET':
+        return TemplateResponse(request, 'application_form.html',
+            {'form': TaskForm(),})
