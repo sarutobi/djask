@@ -34,12 +34,17 @@
         <div>
         {% if not user.is_authenticated %}
         <a href='/account/login'>Вход</a> | <a href='/account/create'>Регистрация</a>
+        {% else %}
+        {{user.get_full_name|default:"Дорогой друг"}}
         {%endif%}
         </div>
         <h1>Crowdtasks</h1>
         {% block header %}{% endblock %}
         <div id='breadcrumb'>{% block breadcrumb %}{%endblock%}</div>
         <div id='mainmenu'>
+            {% if user.is_authenticated %}
+            <a href='/apps/new'>Создать приложение</a>
+            {%endif%}
             {%block mainmenu%}
             {%endblock%}
         </div>

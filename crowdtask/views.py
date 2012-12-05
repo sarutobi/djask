@@ -6,6 +6,7 @@ from django.template.response import TemplateResponse
 from django.http import HttpResponseRedirect
 
 from crowdtask.models import Application
+from crowdtask.forms import ApplicationForm
 
 logger = logging.getLogger(__name__)
 
@@ -28,4 +29,19 @@ def create_user(request):
             form.save()
             return HttpResponseRedirect('/')
         return TemplateResponse(request, 'register_form.html',
+            {'form': form,})
+
+def create_app(request):
+    '''create app form'''
+    if request.method == 'GET':
+        return TemplateResponse(request, 'application_form.html',
+            {'form': ApplicationForm(), })
+    elif request.method == 'POST':
+        form = ApplicationForm(request.POST)
+        if form.is_valid():
+            form.cleaned_data['user_id'] = "%d" % request.user.pk
+            logger.debug("Form data: %s" % form.cleaned_data)
+            form.save()
+            return HttpResponseRedirect('/')
+        return TemplateResponse(request, 'application_form.html',
             {'form': form,})
