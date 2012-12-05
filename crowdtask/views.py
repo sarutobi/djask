@@ -4,6 +4,7 @@ import logging
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.template.response import TemplateResponse
 from django.http import HttpResponseRedirect
+from django.contrib.auth.models import User
 
 from crowdtask.models import Application
 from crowdtask.forms import ApplicationForm
@@ -39,9 +40,10 @@ def create_app(request):
     elif request.method == 'POST':
         form = ApplicationForm(request.POST)
         if form.is_valid():
-            form.cleaned_data['user_id'] = "%d" % request.user.pk
-            logger.debug("Form data: %s" % form.cleaned_data)
-            form.save()
+            app = form.save(commit=False)
+            app.user_id = request.user.id
+            logger.debug("App data: %s" % app)
+            app.save()
             return HttpResponseRedirect('/')
         return TemplateResponse(request, 'application_form.html',
             {'form': form,})
