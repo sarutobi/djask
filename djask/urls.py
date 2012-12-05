@@ -18,5 +18,7 @@ urlpatterns = patterns('',
 
 urlpatterns += patterns('',
     (r'^$', 'crowdtask.views.apps_list'),
+    (r'^account/login$', 'crowdtask.views.login'),
+    (r'^account/create$', 'crowdtask.views.create_user'),
     (r'^app/', include('crowdtask.urls'))
 )
