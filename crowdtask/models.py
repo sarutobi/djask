@@ -12,6 +12,8 @@ class Application(models.Model):
     (i.e. description, logo, author, etc.)
     '''
     name = models.CharField(max_length=100)
+    #Common task question
+    question = models.CharField(max_length=255)
     description = models.TextField(blank=True)
     slug = models.SlugField()
     creation_time = models.DateTimeField(auto_now_add=True, editable=False)
