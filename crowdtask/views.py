@@ -19,13 +19,14 @@ def logout_view(request):
     logout(request)
     return HttpResponseRedirect('/')
 
-def apps_list(request):
-    ''' Show all applications '''
-    logger.debug("apps list requested from %s" % request.META['REMOTE_ADDR'])
-    return TemplateResponse(request, 'apps_list.html',
-        { 'apps': Application.objects.all(),
-        }
-    )
+
+class AppsList(ListView):
+    '''Show all acive applications'''
+    template_name = "apps_list.html"
+    context_object_name = "apps"
+
+    def get_queryset(self):
+        return Application.objects.filter(finished=False)
 
 def create_user(request):
     ''' register form'''
