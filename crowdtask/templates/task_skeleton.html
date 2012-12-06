@@ -1,0 +1,28 @@
+{% extends 'base.html'%}
+
+{% block content %}
+<div id="task_warnings">
+{{task_warnings}}
+</div>
+
+<div id="task_description">
+{% block task_description %}
+This is base skeleton template for representing tasks. 
+This skeleton usable only for representing tasks inside the crowdtask site.
+
+Skeleton contains 3 divs:
+<ul>
+<li><b>task_warinig</b> usable to show various task-related site messages (ex. Success completed)</li>
+<li><b>task_description</b> is used for showing task description (ex. image URI, text task description and hints  and so on).
+This field must be filled by task_description template.</li>
+<li><b>task_answer</b> is used for showing task answers. This could contain text fields, checkboxes, radio and so on.</li>
+</ul>
+{% endblock %}
+</div>
+
+<div id="task_answer">
+{% block task_answer %}
+
+{% endblock %}
+</div>
+{% endblock %}
