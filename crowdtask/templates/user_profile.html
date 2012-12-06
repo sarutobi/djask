@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class='userdata'>
+Username {{user.username}}
+</div>
+<div class='userdata'>
+First name {{user.first_name}}
+</div>
+
+<div class='userdata'>
+Last name {{user.last_name}}
+</div>
+
+<div class='userdata'>
+email {{user.email}}
+</div>
+
+<div class='userdata'>
+Date joined {{user.date_joined}}
+</div>
+
+{% endblock %}

@@ -1,16 +1,22 @@
 # -*- coding: utf-8 -*-
 
 import logging
+
+from django.contrib.auth import logout
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
+from django.contrib.auth.models import User
 from django.template.response import TemplateResponse
 from django.http import HttpResponseRedirect
-from django.contrib.auth.models import User
 from django.views.generic.detail import DetailView
 
 from crowdtask.models import Application
 from crowdtask.forms import ApplicationForm, TaskForm
 
 logger = logging.getLogger(__name__)
+
+def logout_view(request):
+    logout(request)
+    return HttpResponseRedirect('/')
 
 def apps_list(request):
     ''' Show all applications '''

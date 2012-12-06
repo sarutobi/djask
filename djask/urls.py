@@ -22,6 +22,7 @@ urlpatterns += patterns('',
     (r'^$', 'crowdtask.views.apps_list'),
     (r'^account/login$', 'django.contrib.auth.views.login', {'template_name': 'login_form.html'}),
     (r'^account/create$', 'crowdtask.views.create_user'),
+    (r'^logout$', 'crowdtask.views.logout_view'),
     (r'^profile$', UserProfile.as_view()),
     (r'^apps/', include('crowdtask.urls')),
 )
