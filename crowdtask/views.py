@@ -5,6 +5,7 @@ from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.template.response import TemplateResponse
 from django.http import HttpResponseRedirect
 from django.contrib.auth.models import User
+from django.views.generic.detail import DetailView
 
 from crowdtask.models import Application
 from crowdtask.forms import ApplicationForm, TaskForm
@@ -53,3 +54,12 @@ def create_task(request):
     if request.method == 'GET':
         return TemplateResponse(request, 'application_form.html',
             {'form': TaskForm(),})
+
+
+class UserProfile(DetailView):
+    '''User profile view'''
+    model = User
+    template_name="user_profile.html"
+
+    def get_object(self):
+        return self.request.user
