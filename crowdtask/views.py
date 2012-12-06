@@ -9,6 +9,7 @@ from django.template.response import TemplateResponse
 from django.http import HttpResponseRedirect
 from django.views.generic.detail import DetailView
 from django.views.generic.list import ListView
+from django.views.generic.edit import CreateView
 
 from crowdtask.models import Application
 from crowdtask.forms import ApplicationForm, TaskForm
@@ -28,18 +29,12 @@ class AppsList(ListView):
     def get_queryset(self):
         return Application.objects.filter(finished=False)
 
-def create_user(request):
-    ''' register form'''
-    if request.method == 'GET':
-        return TemplateResponse(request, 'register_form.html',
-            {'form': UserCreationForm(), })
-    elif request.method == 'POST':
-        form = UserCreationForm(request.POST)
-        if form.is_valid():
-            form.save()
-            return HttpResponseRedirect('/')
-        return TemplateResponse(request, 'register_form.html',
-            {'form': form,})
+
+class CreateUser(CreateView):
+    '''Register form'''
+    form_class = UserCreationForm
+    template_name = "register_form.html"
+    success_url = "/"
 
 def create_app(request):
     '''create app form'''

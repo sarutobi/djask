@@ -1,6 +1,6 @@
 from django.conf.urls import patterns, include, url
 
-from crowdtask.views import UserProfile, AppsList
+from crowdtask.views import UserProfile, AppsList, CreateUser
 
 # Uncomment the next two lines to enable the admin:
 # from django.contrib import admin
@@ -21,7 +21,7 @@ urlpatterns = patterns('',
 urlpatterns += patterns('',
     (r'^$', AppsList.as_view()),
     (r'^account/login$', 'django.contrib.auth.views.login', {'template_name': 'login_form.html'}),
-    (r'^account/create$', 'crowdtask.views.create_user'),
+    (r'^account/create$', CreateUser.as_view()),
     (r'^logout$', 'crowdtask.views.logout_view'),
     (r'^profile$', UserProfile.as_view()),
     (r'^apps/', include('crowdtask.urls')),
