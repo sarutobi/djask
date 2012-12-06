@@ -8,6 +8,7 @@ from django.contrib.auth.models import User
 from django.template.response import TemplateResponse
 from django.http import HttpResponseRedirect
 from django.views.generic.detail import DetailView
+from django.views.generic.list import ListView
 
 from crowdtask.models import Application
 from crowdtask.forms import ApplicationForm, TaskForm
@@ -63,9 +64,18 @@ def create_task(request):
 
 
 class UserProfile(DetailView):
-    '''User profile view'''
+    '''Own user profile view'''
     model = User
     template_name="user_profile.html"
 
     def get_object(self):
         return self.request.user
+
+
+class UserApps(ListView):
+    '''Self created applications'''
+    template_name="user_applications.html"
+    context_object_name = 'apps'
+
+    def get_queryset(self):
+        return Application.objects.filter(user_id=self.request.user.id)
