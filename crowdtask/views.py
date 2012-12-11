@@ -9,7 +9,7 @@ from django.template.response import TemplateResponse
 from django.http import HttpResponseRedirect
 from django.views.generic.detail import DetailView
 from django.views.generic.list import ListView
-from django.views.generic.edit import CreateView
+from django.views.generic.edit import CreateView, UpdateView
 
 from crowdtask.models import Application
 from crowdtask.forms import ApplicationForm, TaskForm
@@ -58,6 +58,20 @@ def create_task(request):
         return TemplateResponse(request, 'application_form.html',
             {'form': TaskForm(),})
 
+
+class UpdateApp(UpdateView):
+    ''' Update application data view'''
+    model = Application
+    form_class = ApplicationForm
+    template_name = "application_form.html"
+    success_url = "/apps/created"
+
+
+class AppDetails(DetailView):
+    '''Application details view'''
+    model = Application
+    template_name = "application_details.html"
+    context_object_name = "app"
 
 class UserProfile(DetailView):
     '''Own user profile view'''

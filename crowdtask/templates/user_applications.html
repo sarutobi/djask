@@ -3,7 +3,8 @@
 {% block content %}
 <ul>
 {% for a in apps %}
-<li>{{a.name}}</li>
+<li>{{a.name}} <a href="/apps/edit/{{a.id}}">Редактировать</a>
+</li>
 {% endfor %}
 </ul>
 {% endblock %}

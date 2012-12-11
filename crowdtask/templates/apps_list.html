@@ -3,7 +3,9 @@
 {% block content %}
 <ul>
 {% for a in apps %}
-<li>{{a.name}}</li>
+<li>{{a.name}} 
+{{a.description}}
+</li>
 {%endfor%}
 </ul>
 {% endblock %}
