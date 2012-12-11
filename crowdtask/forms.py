@@ -15,4 +15,4 @@ class TaskForm(forms.ModelForm):
     class Meta:
         model = Task
         exclude = ['user', 'creation_time', 'status', 'current_runs']
-        widgets = {'application': forms.HiddenInput(), }
+        widgets = {'application': forms.HiddenInput, }

@@ -59,6 +59,17 @@ def create_task(request):
             {'form': TaskForm(),})
 
 
+class CreateTask(CreateView):
+    form_class = TaskForm
+    template_name = "application_form.html"
+    success_url = "/apps/created"
+
+    def get_form_kwargs(self):
+        kwargs = super(CreateTask, self).get_form_kwargs()
+        #kwargs['application'] = self.pk
+        print self
+        return kwargs
+
 class UpdateApp(UpdateView):
     ''' Update application data view'''
     model = Application
