@@ -64,10 +64,18 @@ class CreateTask(CreateView):
     template_name = "application_form.html"
     success_url = "/apps/created"
 
+    def get(self, request, *args, **kwargs):
+        self.app_id = kwargs.get('pk')
+        return super(CreateView, self).get(request, *args, **kwargs)
+
+    def post(self, request, *args, **kwargs):
+        print kwargs.get('pk')
+        return super(CreateView, self).post(request, *args, **kwargs)
+
     def get_form_kwargs(self):
         kwargs = super(CreateTask, self).get_form_kwargs()
         #kwargs['application'] = self.pk
-        print self
+        #print self.app_id
         return kwargs
 
 class UpdateApp(UpdateView):
