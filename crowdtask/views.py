@@ -10,8 +10,9 @@ from django.http import HttpResponseRedirect
 from django.views.generic.detail import DetailView
 from django.views.generic.list import ListView
 from django.views.generic.edit import CreateView, UpdateView
+from django.shortcuts import redirect
 
-from crowdtask.models import Application
+from crowdtask.models import Application, Task
 from crowdtask.forms import ApplicationForm, TaskForm
 
 logger = logging.getLogger(__name__)
@@ -35,6 +36,7 @@ class CreateUser(CreateView):
     form_class = UserCreationForm
     template_name = "register_form.html"
     success_url = "/"
+
 
 def create_app(request):
     '''create app form'''
@@ -63,20 +65,34 @@ class CreateTask(CreateView):
     form_class = TaskForm
     template_name = "application_form.html"
     success_url = "/apps/created"
+    initial = {}
 
     def get(self, request, *args, **kwargs):
-        self.app_id = kwargs.get('pk')
+        self.initial['application'] =  kwargs.get('pk')
         return super(CreateView, self).get(request, *args, **kwargs)
 
-    def post(self, request, *args, **kwargs):
-        print kwargs.get('pk')
-        return super(CreateView, self).post(request, *args, **kwargs)
+    def form_valid(self, form):
+        task = form.save(commit=False)
+        task.user_id = self.request.user.pk
+        task.status = 0 
+        task.save()
+        return redirect(self.success_url)
 
-    def get_form_kwargs(self):
-        kwargs = super(CreateTask, self).get_form_kwargs()
-        #kwargs['application'] = self.pk
-        #print self.app_id
-        return kwargs
+
+class AppTasksList(ListView):
+    '''Show tasks, linked to specific application'''
+    template_name = 'task_list.html'
+    context_object_name = 'tasks'
+
+    def get_context_data(self, **kwargs):
+        context = super(AppTasksList, self).get_context_data(**kwargs)
+        context['app'] = self.app
+        return context
+
+    def get_queryset(self):
+        self.app = Application.objects.get(slug=self.kwargs.get('slug'))
+        return Task.objects.filter(application=self.app)
+
 
 class UpdateApp(UpdateView):
     ''' Update application data view'''

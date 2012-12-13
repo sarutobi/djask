@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+
+{% block content %}
+Список задач приложения {{app.name}}
+
+<ul>
+{% for t in tasks %}
+<li>Задача {{t.id}} {{t.get_status_display}}</li>
+{% endfor %}
+</ul>
+{% endblock %}

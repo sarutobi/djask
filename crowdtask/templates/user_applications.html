@@ -3,7 +3,7 @@
 {% block content %}
 <ul>
 {% for a in apps %}
-<li>{{a.name}} <a href="/apps/edit/{{a.id}}">Редактировать</a> <a href='/apps/{{a.id}}/newtask'>Добавить задачу</a>
+<li>{{a.name}} <a href="/apps/edit/{{a.id}}">Редактировать</a> <a href="/apps/{{a.slug}}/tasks">Задачи</a> <a href='/apps/{{a.id}}/newtask'>Добавить задачу</a>
 </li>
 {% endfor %}
 </ul>
