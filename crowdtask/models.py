@@ -33,12 +33,12 @@ class Task(models.Model):
     Simple task description. Each task must be connected to one application.
     '''
     TASK_STATUS = (
-        ('0', 'Created'),
-        ('1', 'In progress'),
-        ('2', 'Pending'),
-        ('3', 'Valid'),
-        ('4', 'Invalid'),
-        ('5', 'Error'),
+        (0, 'Created'),
+        (1, 'In progress'),
+        (2, 'Pending'),
+        (3, 'Valid'),
+        (4, 'Invalid'),
+        (5, 'Error'),
     )
     application = models.ForeignKey(Application)
     user = models.ForeignKey(User)  #Only authorized users can create tasks
