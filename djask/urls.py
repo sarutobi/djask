@@ -25,4 +25,5 @@ urlpatterns += patterns('',
     (r'^logout$', 'crowdtask.views.logout_view'),
     (r'^profile$', UserProfile.as_view()),
     (r'^apps/', include('crowdtask.urls')),
+    (r'^apps/api/', include('crowdtask.api.urls')),
 )
