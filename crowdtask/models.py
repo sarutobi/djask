@@ -22,7 +22,7 @@ class Application(models.Model):
     user = models. ForeignKey(User)  # only authorized users can create applications
     parallels = models.BooleanField()  # User can solve more than one task in time
     finished = models.BooleanField(editable=False, default=False)
-    presenter = models.URLField()
+    presenter = JSONField(default='')
 
     def __unicode__(self):
         return self.name
@@ -60,6 +60,7 @@ class TaskRun(models.Model):
     When user solve a task, answer and related information collected here.
     '''
     task = models.ForeignKey(Task)
+    application = models.ForeignKey(Application)
     info = JSONField()
     remote_ip = models.IPAddressField()
     user = models.ForeignKey(User, blank=True, null=True)

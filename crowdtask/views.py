@@ -124,3 +124,10 @@ class UserApps(ListView):
 
     def get_queryset(self):
         return Application.objects.filter(user_id=self.request.user.id)
+
+
+class BaseTaskView(DetailView):
+    '''Show task for user and get an answer'''
+    def get(self, request, *args, **kwargs):
+        pass
+
