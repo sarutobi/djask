@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
 import logging
+from random import choice
 
 from django.contrib.auth import logout
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
@@ -12,7 +13,7 @@ from django.views.generic.list import ListView
 from django.views.generic.edit import CreateView, UpdateView
 from django.shortcuts import redirect
 
-from crowdtask.models import Application, Task
+from crowdtask.models import Application, Task, TaskRun
 from crowdtask.forms import ApplicationForm, TaskForm
 
 logger = logging.getLogger(__name__)
@@ -74,7 +75,7 @@ class CreateTask(CreateView):
     def form_valid(self, form):
         task = form.save(commit=False)
         task.user_id = self.request.user.pk
-        task.status = 0 
+        task.status = 0
         task.save()
         return redirect(self.success_url)
 
@@ -108,6 +109,7 @@ class AppDetails(DetailView):
     template_name = "application_details.html"
     context_object_name = "app"
 
+
 class UserProfile(DetailView):
     '''Own user profile view'''
     model = User
@@ -128,6 +130,9 @@ class UserApps(ListView):
 
 class BaseTaskView(DetailView):
     '''Show task for user and get an answer'''
-    def get(self, request, *args, **kwargs):
-        pass
+    template_name = "task_skeleton.html"
 
+    def get_object(self):
+        task = TaskRun.objects.exclude(user=self.request.user)
+        task_id = Task.objects.exclude(id__in=task).values('id')
+        return Task.objects.select_related('application').get(id=choice(task_id)['id'])
