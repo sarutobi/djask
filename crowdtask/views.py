@@ -63,6 +63,9 @@ def create_task(request):
 
 
 class CreateTask(CreateView):
+    '''
+    Task creation functionality.
+    '''
     form_class = TaskForm
     template_name = "application_form.html"
     success_url = "/apps/created"
@@ -82,7 +85,7 @@ class CreateTask(CreateView):
 
 class AppTasksList(ListView):
     '''Show tasks, linked to specific application'''
-    template_name = 'task_list.html'
+    template_name = 'task_list.haml'
     context_object_name = 'tasks'
 
     def get_context_data(self, **kwargs):
