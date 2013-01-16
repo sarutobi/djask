@@ -1,0 +1,19 @@
+- extends 'base.html'
+
+- block content
+    Список задач приложения ={app.name}
+
+    %table
+        %tr
+            %th &nbsp;
+            %th Данные
+            %th Статус
+            %th Получено ответов
+            %th Требуется ответов
+        - for t in tasks
+            %tr
+                %td ={forloop.counter}
+                %td Данные задачи в зависимости от JSON
+                %td ={t.get_status_display}
+                %td Число ответов
+                %td ={t.quorum}
