@@ -2,9 +2,26 @@
 
 {% block content %}
 {{form.errors}}
-<form action='' method='POST'>
+<form action='' method='POST' id="id_action_form">
 {% csrf_token %}
 {{form.as_p}}
 <input type='submit'>
 </form>
+{% endblock %}
+
+{% block scripts %}
+<script type='text/javascript'>
+$(function(){
+    var form = $('#id_action_form p:last');
+    var data = $('#id_presenter');
+    var cache = $.parseJSON($(data).val());
+    _.each(cache.fields, function(data, idx){
+        $(form).before(Mustache.render(crowdtask.form.text_field,{
+            field_id: "dynamic_" + data.type + "_" + idx,
+            label: "Enter your opinion",
+            field_name: data.type + "_" + idx
+        }));
+    });
+});
+</script>
 {% endblock%}
