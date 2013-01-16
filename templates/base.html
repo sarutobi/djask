@@ -20,7 +20,8 @@
 
     <!-- Place favicon.ico and apple-touch-icon.png in the root directory: mathiasbynens.be/notes/touch-icons -->
 
-    <link rel="stylesheet" href="{{STATIC_URL}}css/main.css">
+    <link rel="stylesheet/less" type="text/css" href="{{STATIC_URL}}css/bootstrap.less">
+    <script type='text/javascript' src="{{STATIC_URL}}/js/less-1.3.3.min.js"></script>
     {% block external_css %}{%endblock%}
     <!-- More ideas for your <head> here: h5bp.com/d/head-Tips -->
 
@@ -33,11 +34,11 @@
     <div id='header'>
         <div>
         {% if not user.is_authenticated %}
-        <a href='/account/login'>Вход</a> | <a href='/account/create'>Регистрация</a>
+        <a href='/account/login' class='btn'>Вход</a> | <a href='/account/create'>Регистрация</a>
         {% else %}
         Вошел как 
-        <a href='/profile'>{{user.get_full_name|default:user}}</a>
-        <a href="/logout">Выход</a>
+        <a href='/profile' class='btn btn-mini'>{{user.get_full_name|default:user}}</a>
+        <a href="/logout" class='btn btn-mini'>Выход</a>
         {%endif%}
         </div>
         <h1>Crowdtasks</h1>
