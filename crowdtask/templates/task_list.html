@@ -3,9 +3,22 @@
 {% block content %}
 Список задач приложения {{app.name}}
 
-<ul>
+<table>
+<tr>
+<th>&nbsp;</th>
+<th>Данные</th>
+<th>Статус</th>
+<th>Получено ответов</th>
+<th>Требуется ответов</th>
+</tr>
 {% for t in tasks %}
-<li>Задача {{t.id}} {{t.get_status_display}}</li>
+<tr>
+<td>{{forloop.counter}}</td>
+<td>Данные задачи в зависимости от JSON</td>
+<td>{{t.get_status_display}}</td>
+<td>Число ответов</td>
+<td>{{t.quorum}}</td>
+</tr>
 {% endfor %}
-</ul>
+</table>
 {% endblock %}
