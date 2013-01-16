@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from django.db import models
+from django.utils import unittest
 from django.contrib.auth.models import User
 from fields import JSONField
 
@@ -57,7 +58,7 @@ class Task(models.Model):
 
 class TaskRun(models.Model):
     '''
-    When user solve a task, answer and related information collected here.
+    When user solve a task, store answer and related information here.
     '''
     task = models.ForeignKey(Task)
     application = models.ForeignKey(Application)
@@ -66,3 +67,12 @@ class TaskRun(models.Model):
     user = models.ForeignKey(User, blank=True, null=True)
     creation_time = models.DateTimeField(auto_now_add=True, editable=False)
     accepted = models.BooleanField(default=False)
+
+
+class ApplicationTest(unittest.TestCase):
+    def setUp(self):
+        self.app = Application()
+
+    def testCreateApplication(self):
+        a = Application()
+        self.assertIsNotNone(a)
