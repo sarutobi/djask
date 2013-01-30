@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 
 from django.db import models
-from django.utils import unittest
 from django.contrib.auth.models import User
 from fields import JSONField
 
@@ -28,6 +27,12 @@ class Application(models.Model):
     def __unicode__(self):
         return self.name
 
+    def get_absolute_url(self):
+        return ('/app/view/%s' % self.slug)
+
+    def append_task(self, task):
+        task.application = self.id
+        task.save()
 
 class Task(models.Model):
     '''
@@ -45,7 +50,7 @@ class Task(models.Model):
     user = models.ForeignKey(User)  #Only authorized users can create tasks
     creation_time = models.DateTimeField(auto_now_add=True, editable=False)
     valid_until = models.DateTimeField(blank=True, null=True)
-    status = models.PositiveIntegerField(choices=TASK_STATUS)
+    status = models.PositiveIntegerField(choices=TASK_STATUS, default=0)
     # Priority - value between 0 (low) and 100 (utmost) - hint for tracker
     priority = models.PositiveIntegerField()
     #Number of answers to complete task
@@ -68,11 +73,3 @@ class TaskRun(models.Model):
     creation_time = models.DateTimeField(auto_now_add=True, editable=False)
     accepted = models.BooleanField(default=False)
 
-
-class ApplicationTest(unittest.TestCase):
-    def setUp(self):
-        self.app = Application()
-
-    def testCreateApplication(self):
-        a = Application()
-        self.assertIsNotNone(a)
