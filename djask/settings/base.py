@@ -1,8 +1,19 @@
 # Django settings for djask project.
 
 import os
+from django.core.exceptions import ImproperlyConfigured
 
-DEBUG = True
+
+def get_env_var(name):
+    try:
+        return os.env[name]
+    except KeyError:
+        raise ImproperlyConfigured("Set the %s env variable" % name)
+
+here = lambda *x: os.path.join(os.path.abspath(os.path.dirname(__file__)), *x)
+SITE_ROOT = here('..', '..')
+
+DEBUG = False
 TEMPLATE_DEBUG = DEBUG
 
 ADMINS = (
@@ -46,8 +57,6 @@ USE_L10N = True
 USE_TZ = True
 
 
-SITE_ROOT = os.path.realpath(os.path.dirname(os.path.dirname(__file__)))
-
 # Absolute filesystem path to the directory that will hold user-uploaded files.
 # Example: "/home/media/media.lawrence.com/media/"
 MEDIA_ROOT = ''
@@ -77,7 +86,7 @@ STATICFILES_DIRS = (
 STATICFILES_FINDERS = (
     'django.contrib.staticfiles.finders.FileSystemFinder',
     'django.contrib.staticfiles.finders.AppDirectoriesFinder',
-#    'django.contrib.staticfiles.finders.DefaultStorageFinder',
+#   'django.contrib.staticfiles.finders.DefaultStorageFinder',
 )
 
 # Make this unique, and don't share it with anybody.
@@ -89,7 +98,7 @@ TEMPLATE_LOADERS = (
     'hamlpy.template.loaders.HamlPyAppDirectoriesLoader',
     'django.template.loaders.filesystem.Loader',
     'django.template.loaders.app_directories.Loader',
-#     'django.template.loaders.eggs.Loader',
+#   'django.template.loaders.eggs.Loader',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -125,6 +134,7 @@ INSTALLED_APPS = (
     # 'django.contrib.admin',
     # Uncomment the next line to enable admin documentation:
     # 'django.contrib.admindocs',
+    'south',
     'crowdtask',
     'rest_framework',
 )
@@ -176,10 +186,4 @@ LOGGING = {
     }
 }
 
-try:
-    LOCAL_SETTINGS
-except NameError:
-    try:
-        from local_settings import *
-    except:
-        pass
+
