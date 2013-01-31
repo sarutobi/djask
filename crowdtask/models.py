@@ -19,8 +19,10 @@ class Application(models.Model):
     creation_time = models.DateTimeField(auto_now_add=True, editable=False)
     valid_until = models.DateTimeField(blank=True, null=True)
     really_finished = models.DateTimeField(blank=True, null=True)
-    user = models. ForeignKey(User)  # only authorized users can create applications
-    parallels = models.BooleanField()  # User can solve more than one task in time
+    # only authorized users can create application
+    user = models. ForeignKey(User)
+    # User can solve more than one task in time
+    parallels = models.BooleanField()
     finished = models.BooleanField(editable=False, default=False)
     presenter = JSONField(default='')
 
@@ -31,8 +33,13 @@ class Application(models.Model):
         return ('/app/view/%s' % self.slug)
 
     def append_task(self, task):
-        task.application = self.id
+        task.application = self
+        task.user = self.user
         task.save()
+
+    def tasks(self):
+        return Task.objects.filter(application=self)
+
 
 class Task(models.Model):
     '''
@@ -47,7 +54,8 @@ class Task(models.Model):
         (5, 'Error'),
     )
     application = models.ForeignKey(Application)
-    user = models.ForeignKey(User)  #Only authorized users can create tasks
+    #Only authorized users can create tasks
+    user = models.ForeignKey(User)
     creation_time = models.DateTimeField(auto_now_add=True, editable=False)
     valid_until = models.DateTimeField(blank=True, null=True)
     status = models.PositiveIntegerField(choices=TASK_STATUS, default=0)
