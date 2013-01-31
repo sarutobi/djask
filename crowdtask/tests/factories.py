@@ -7,20 +7,26 @@ import string
 from django.contrib.auth.models import User
 from crowdtask.models import Application, Task
 
-def generate_string(str_len=6):
-    return "".join(random.choice(string.ascii_lowercase) for x in xrange(str_len))
+
+def generate_string(str_len=6, src=string.ascii_lowercase):
+    return "".join(random.choice(src) for x in xrange(str_len))
+
 
 def lorem_ipsum(words=40):
-    return " ".join(generate_string(str_len=random.randint(3, 7)) for _ in xrange(words))
+    return " ".join(generate_string(str_len=random.randint(3, 7))
+                    for _ in xrange(words))
 
 
 class UserFactory(factory.Factory):
     FACTORY_FOR = User
 
-    first_name = 'Tester'
-    last_name = 'Boy'
-    email = factory.LazyAttribute(lambda a:
-        '{0}_{1}@example.com'.format(a.first_name, a.last_name).lower())
+    username = factory.Sequence(lambda n: 'username_%s' % n)
+    first_name = generate_string()
+    last_name = generate_string()
+    email = factory.LazyAttribute(
+        lambda a: '{0}@example.com'.
+                  format(a.username)
+                  .lower())
 
 
 class AppFactory(factory.Factory):
@@ -37,9 +43,6 @@ class AppFactory(factory.Factory):
 class TaskFactory(factory.Factory):
     FACTORY_FOR = Task
 
-    name = generate_string()
-
-def user_generator():
-    pass
-
+    priority = random.randint(1, 100)
+    quorum = random.randint(10, 20)
 
