@@ -34,11 +34,13 @@ class Application(models.Model):
 
     def append_task(self, task):
         task.application = self
-        task.user = self.user
         task.save()
 
     def tasks(self):
-        return Task.objects.filter(application=self)
+        return self.task_set.all()
+
+    def completed_tasks(self):
+        return self.task_set.filter(quorum__lte=models.F('current_runs'))
 
 
 class Task(models.Model):
@@ -67,6 +69,12 @@ class Task(models.Model):
     max_runs = models.PositiveIntegerField(default=20)
     current_runs = models.PositiveIntegerField(default=0, editable=False)
     info = JSONField()
+
+    def __unicode__(self):
+        return "#%s" % self.id
+
+    def is_completed(self):
+        return self.quorum <= self.current_runs
 
 
 class TaskRun(models.Model):
