@@ -32,7 +32,7 @@ class UserFactory(factory.Factory):
 class AppFactory(factory.Factory):
     FACTORY_FOR = Application
 
-    name = generate_string()
+    name = factory.LazyAttribute(lambda a: generate_string())
     question = '%s ?' % lorem_ipsum(4)
     description = lorem_ipsum(20)
     slug = factory.LazyAttribute(lambda a: 'slug_{0}'.format(a.name).lower())
