@@ -8,7 +8,7 @@ TEST_RUNNER = "tests.runner.DiscoveryRunner"
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': '',
+        'NAME': ':memory:',
         'USER': '',
         'PASSWORD': '',
         'HOST': '',
