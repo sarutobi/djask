@@ -24,7 +24,7 @@ class Application(models.Model):
     # User can solve more than one task in time
     parallels = models.BooleanField()
     finished = models.BooleanField(editable=False, default=False)
-    presenter = JSONField(default='')
+    presenter = models.TextField(blank=True, default='')
 
     def __unicode__(self):
         return self.name
