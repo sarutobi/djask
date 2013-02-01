@@ -40,13 +40,11 @@ class UserTest(unittest.TestCase):
                          self.user.email)
 
 
-
 class ApplicationTest(unittest.TestCase):
 
     def setUp(self):
         user = UserFactory()
-        self.app = AppFactory.build()
-        self.app.user = user
+        self.app = AppFactory.build(user=user)
 
     def tearDown(self):
         self.app.user.delete()
@@ -62,7 +60,8 @@ class ApplicationTest(unittest.TestCase):
         self.assertEqual(self.app.name, "%s" % self.app)
 
     def test_absolute_url(self):
-        self.assertEqual('/app/view/%s' % self.app.slug, self.app.get_absolute_url())
+        self.assertEqual('/app/view/%s' % self.app.slug,
+                         self.app.get_absolute_url())
 
     def test_application_name(self):
         '''Application should have name'''
@@ -77,25 +76,55 @@ class ApplicationTest(unittest.TestCase):
         self.assertEqual(None, self.app.creation_time)
 
 
-class TestTasksWork(unittest.TestCase):
+class TestAppTasksWork(unittest.TestCase):
     def setUp(self):
         user = UserFactory()
-        self.task = TaskFactory.build(user=user)
+        self.app = AppFactory(user=user)
 
     def tearDown(self):
-        self.task.user.delete()
-        #self.task.delete()
-        self.task = None
+        self.app.user.delete()
+        self.app.delete()
+        self.app = None
 
     def test_append_task(self):
         '''Test append task to application'''
-        app = AppFactory(user=UserFactory())
-        app.append_task(TaskFactory.build())
-        self.assertEqual(1, len(app.tasks()))
+        task = TaskFactory.build(user=self.app.user)
+        self.app.append_task(task)
+        self.assertEqual(1, len(self.app.tasks()))
+        self.assertEqual(self.app.user, task.user)
+        task.delete()
+
+    def test_append_task_another_user(self):
+        '''If another user add an task to app, store it'''
+        user = UserFactory()
+        task = TaskFactory.build(user=user)
+        self.app.append_task(task)
+        self.assertNotEqual(self.app.user, task.user)
+        task.delete()
+
+    def test_completed_task_list(self):
+        self.app.append_task(TaskFactory.build(user=self.app.user,
+                                               quorum=20, current_runs=19))
+        self.app.append_task(TaskFactory.build(user=self.app.user,
+                                               quorum=20, current_runs=20))
+        self.app.append_task(TaskFactory.build(user=self.app.user,
+                                               quorum=20, current_runs=21))
+        ct = self.app.completed_tasks()
+        self.assertIsNotNone(ct)
+        self.assertEqual(2, len(ct))
 
 
 class TaskTest(unittest.TestCase):
 
+    def setUp(self):
+        self.task1 = TaskFactory.build()
+        self.task2 = TaskFactory.build()
+
+    def tearDown(self):
+        self.task1 = None
+        self.task2 = None
+
     def test_task_creation(self):
-        task = Task()
-        self.assertEqual(0, task.status)
+        self.assertIsNotNone(self.task1)
+        self.assertEqual(0, self.task1.status)
+        self.assertEqual(0, self.task2.status)
